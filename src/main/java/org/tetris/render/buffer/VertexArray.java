@@ -1,6 +1,7 @@
-package org.tetris.buffers;
+package org.tetris.render.buffer;
 
 import org.lwjgl.opengl.GL46;
+import org.tetris.render.base.RenderObject;
 
 public class VertexArray extends RenderObject {
 

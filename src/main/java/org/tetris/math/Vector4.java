@@ -10,6 +10,26 @@ public class Vector4 {
 
     public float w;
 
+    public Vector4() {
+        x = 0.0f;
+        y = 0.0f;
+        z = 0.0f;
+        w = 0.0f;
+    }
+    public Vector4(float t) {
+        x = t;
+        y = t;
+        z = t;
+        w = t;
+    }
+
+    public Vector4(Vector3 vector) {
+        x = vector.x;
+        y = vector.y;
+        z = vector.z;
+        w = 1.0f;
+    }
+
     public float length()
     {
         return (float) Math.sqrt(x * x + y * y + z * z + w * w);

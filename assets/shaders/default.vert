@@ -14,10 +14,6 @@ uniform mat4 UTransform;
 
 void main()
 {
-    EPosition = LPosition;
-    ENormal = LNormal;
-    EUV = LUV;
-    /*
     vec4 WorldPosition = UTransform * vec4(LPosition, 1.0);
 
     EPosition = WorldPosition.xyz;
@@ -25,6 +21,4 @@ void main()
     EUV = LUV;
 
     gl_Position = UProjection * UView * WorldPosition;
-    */
-    gl_Position = vec4(LPosition, 1.0);
 }

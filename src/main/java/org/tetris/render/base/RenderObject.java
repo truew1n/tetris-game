@@ -1,4 +1,4 @@
-package org.tetris.buffers;
+package org.tetris.render.base;
 
 import lombok.Data;
 

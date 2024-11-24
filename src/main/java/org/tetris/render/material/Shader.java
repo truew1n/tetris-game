@@ -1,6 +1,7 @@
-package org.tetris.buffers;
+package org.tetris.render.material;
 
 import org.lwjgl.opengl.GL46;
+import org.tetris.render.base.RenderObject;
 
 import java.io.IOException;
 import java.nio.file.Files;

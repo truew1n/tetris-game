@@ -1,8 +1,9 @@
-package org.tetris.buffers;
+package org.tetris.render.buffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL46;
 import org.tetris.math.Vertex;
+import org.tetris.render.base.RenderObject;
 
 import java.nio.FloatBuffer;
 import java.util.List;

@@ -1,9 +1,8 @@
-package org.tetris.texture;
+package org.tetris.render.material;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL46;
-import org.tetris.buffers.RenderObject;
-import org.tetris.buffers.Shader;
+import org.tetris.render.base.RenderObject;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -83,7 +82,7 @@ public class Texture extends RenderObject {
         GL46.glActiveTexture(GL46.GL_TEXTURE0);
         GL46.glBindTexture(GL46.GL_TEXTURE_2D, id);
 
-        setTextureParameter(TextureParameter.MIN_FILTER, TextureParameterValue.LINEAR_MIPMAP_LINEAR);
+        setTextureParameter(TextureParameter.MIN_FILTER, TextureParameterValue.LINEAR);
         setTextureParameter(TextureParameter.MAG_FILTER, TextureParameterValue.LINEAR);
         setTextureParameter(TextureParameter.WRAP_U, TextureParameterValue.REPEAT);
         setTextureParameter(TextureParameter.WRAP_V, TextureParameterValue.REPEAT);
@@ -138,11 +137,12 @@ public class Texture extends RenderObject {
         int[] pixels = new int[width * height];
         image.getRGB(0, 0, width, height, pixels, 0, width);
 
-        ByteBuffer buffer = BufferUtils.createByteBuffer(width * height * channels);
+        int padding = (4 - (width * channels) % 4) % 4;
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int pixel = pixels[y * width + x];
+        ByteBuffer buffer = BufferUtils.createByteBuffer((width + padding) * height * channels);
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                int pixel = pixels[x + y * width];
 
                 byte a = (byte) ((pixel >> 24) & 0xFF);
                 byte r = (byte) ((pixel >> 16) & 0xFF);
@@ -158,6 +158,9 @@ public class Texture extends RenderObject {
                     float gray = (0.299f * (r & 0xFF) + 0.587f * (g & 0xFF) + 0.114f * (b & 0xFF)) / 255.0f;
                     buffer.put((byte) (gray * 255));
                 }
+            }
+            for (int i = 0; i < padding; i++) {
+                buffer.put((byte) 0);
             }
         }
 

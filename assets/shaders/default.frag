@@ -10,7 +10,7 @@ uniform sampler2D UDiffuse;
 
 void main()
 {
-//    EFragmentColor = texture(UDiffuse, EUV);
+    EFragmentColor = texture(UDiffuse, EUV);
 
-    EFragmentColor = vec4(EUV.x, (EUV.x + EUV.y) / 2.0, EUV.y, 1.0);
+//    EFragmentColor = vec4(EUV.x, 0.5, EUV.y, 1.0);
 }
