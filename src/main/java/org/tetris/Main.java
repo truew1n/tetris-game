@@ -4,13 +4,11 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL46;
 import org.tetris.math.Matrix4;
-import org.tetris.render.buffer.ElementBuffer;
+import org.tetris.render.material.Mesh;
 import org.tetris.render.material.Shader;
-import org.tetris.render.buffer.VertexArray;
-import org.tetris.render.buffer.VertexBuffer;
 import org.tetris.math.Vector2;
 import org.tetris.math.Vector3;
-import org.tetris.math.Vertex;
+import org.tetris.render.base.Vertex;
 import org.tetris.render.material.Texture;
 
 import java.io.File;
@@ -23,6 +21,9 @@ public class Main {
     private static int width = 1920;
     private static int height = 1080;
 
+    private static String fromPath(String filepath) {
+        return new File(filepath).getAbsolutePath();
+    }
     public static void main(String[] args) {
         if (!GLFW.glfwInit()) {
             System.err.println("Failed to initialize GLFW");
@@ -48,35 +49,20 @@ public class Main {
         GLFW.glfwShowWindow(window);
         GL.createCapabilities();
 
-
-        VertexArray vertexArray = new VertexArray();
-        vertexArray.bind();
-
-        VertexBuffer vertexBuffer = new VertexBuffer(
+        Mesh blockMesh = new Mesh(
             List.of(
-                new Vertex(new Vector3(-1.0f, -1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector2(0.0f, 1.0f)),
-                new Vertex(new Vector3(1.0f, -1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector2(1.0f, 1.0f)),
-                new Vertex(new Vector3(1.0f, 1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector2(1.0f, 0.0f)),
-                new Vertex(new Vector3(-1.0f, 1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector2(0.0f, 0.0f))
-            )
-        );
-
-        ElementBuffer elementBuffer = new ElementBuffer(
+                    new Vertex(new Vector3(-1.0f, -1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector2(0.0f, 1.0f)),
+                    new Vertex(new Vector3(1.0f, -1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector2(1.0f, 1.0f)),
+                    new Vertex(new Vector3(1.0f, 1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector2(1.0f, 0.0f)),
+                    new Vertex(new Vector3(-1.0f, 1.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f), new Vector2(0.0f, 0.0f))
+            ),
             List.of(
                     0, 1, 2,
                     2, 3, 0
             )
         );
 
-        vertexArray.link(vertexBuffer, 0, 3, GL46.GL_FLOAT, Vertex.SIZE, 0);
-        vertexArray.link(vertexBuffer, 1, 3, GL46.GL_FLOAT, Vertex.SIZE, 3 * 4);
-        vertexArray.link(vertexBuffer, 2, 2, GL46.GL_FLOAT, Vertex.SIZE, 6 * 4);
-        vertexArray.unbind();
-
-        vertexBuffer.delete();
-        elementBuffer.delete();
-
-        Texture texture = new Texture(new File("assets\\textures\\block_dark_green.png").getAbsolutePath(), "UDiffuse", 0);
+        Texture texture = new Texture(fromPath("assets\\textures\\block_purple.png"), "UDiffuse", 0);
 
         Shader shader = new Shader();
         shader.create();
@@ -90,7 +76,7 @@ public class Main {
         shader.activate();
         texture.bind();
 
-        float fheight = 3.0f;
+        float fheight = 8.0f;
         float fwidth = (16.0f / 9.0f) * fheight;
 
         Matrix4 projection = Matrix4.getOrtographic(0.1f, 10.0f, -fheight / 2.0f, fheight / 2.0f, -fwidth / 2.0f, fwidth / 2.0f);
@@ -113,11 +99,7 @@ public class Main {
             GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
             GL46.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-            vertexArray.bind();
-
-            GL46.glDrawElements(GL46.GL_TRIANGLES, 6, GL46.GL_UNSIGNED_INT, 0);
-
-            vertexArray.unbind();
+            blockMesh.draw();
 
             GLFW.glfwSwapBuffers(window);
             GLFW.glfwPollEvents();
@@ -128,6 +110,8 @@ public class Main {
 
         shader.deactivate();
         shader.delete();
+
+        blockMesh.delete();
 
         GLFW.glfwDestroyWindow(window);
         GLFW.glfwTerminate();
