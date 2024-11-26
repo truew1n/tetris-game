@@ -43,4 +43,12 @@ public class Vector4 {
         z = z / length;
         w = w / length;
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "|%.2f, %6.2f, %6.2f, %6.2f|\n",
+                x, y, z, w
+        );
+    }
 }

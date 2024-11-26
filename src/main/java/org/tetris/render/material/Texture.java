@@ -27,8 +27,6 @@ public class Texture extends RenderObject {
             throw new RuntimeException("Failed to load texture file: " + texturePath, e);
         }
 
-        image = flipImageVertically(image);
-
         int width = image.getWidth();
         int height = image.getHeight();
         this.channels = image.getColorModel().getNumComponents();

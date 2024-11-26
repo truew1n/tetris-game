@@ -71,7 +71,7 @@ public class Matrix4 {
 
         resultMatrix.values[0][3] = -Vector3.dot(right, eye);
         resultMatrix.values[1][3] = -Vector3.dot(up, eye);
-        resultMatrix.values[2][3] = Vector3.dot(front, eye);
+        resultMatrix.values[2][3] = -Vector3.dot(forward, eye);
 
         resultMatrix.values[3][3] = 1.0f;
 
@@ -154,10 +154,10 @@ public class Matrix4 {
         Vector4 resultVector = new Vector4();
 
         for (int i = 0; i < 4; i++) {
-            resultVector.x += left.values[i][0] * right.x;
-            resultVector.y += left.values[i][1] * right.y;
-            resultVector.z += left.values[i][2] * right.z;
-            resultVector.w += left.values[i][3] * right.w;
+            resultVector.x += left.values[0][i] * right.x;
+            resultVector.y += left.values[1][i] * right.y;
+            resultVector.z += left.values[2][i] * right.z;
+            resultVector.w += left.values[3][i] * right.w;
         }
 
         return resultVector;
@@ -171,8 +171,8 @@ public class Matrix4 {
         float[] flatArray = new float[16];
 
         int index = 0;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < 4; i++) {
                 flatArray[index] = values[i][j];
                 index++;
             }

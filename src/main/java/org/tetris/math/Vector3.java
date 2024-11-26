@@ -81,4 +81,12 @@ public class Vector3 {
     public static Vector3 getUp() {
         return new Vector3(0.0f, 1.0f, 0.0f);
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "|%.2f, %6.2f, %6.2f|\n",
+                x, y, z
+        );
+    }
 }
